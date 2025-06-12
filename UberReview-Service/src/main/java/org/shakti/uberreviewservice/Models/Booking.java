@@ -3,7 +3,6 @@ package org.shakti.uberreviewservice.Models;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.shakti.uberreviewservice.Enums.BookingStatus;
 
 import java.util.Date;
@@ -16,8 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class Booking extends BaseModel{
 
-    @OneToOne
-    @Cascade(value = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Review review; // defines 1:1 relation between Booking & Review
 
     @Enumerated(value = EnumType.STRING)
@@ -34,6 +32,6 @@ public class Booking extends BaseModel{
     @ManyToOne
     private Driver driver;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Passenger passenger;
 }

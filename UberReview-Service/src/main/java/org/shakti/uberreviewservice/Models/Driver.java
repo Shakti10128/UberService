@@ -2,8 +2,11 @@ package org.shakti.uberreviewservice.Models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,7 @@ public class Driver extends BaseModel{
     private String licenseNumber;
 
     // 1 Driver can have many bookings
-    @OneToMany(mappedBy = "driver")
+    @OneToMany(mappedBy = "driver",fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT) // To solve the N+1 problem
     private List<Booking> bookings = new ArrayList<>();
 }
