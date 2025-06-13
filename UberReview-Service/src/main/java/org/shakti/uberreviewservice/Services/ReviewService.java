@@ -18,13 +18,19 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 @Transactional
 public class ReviewService implements CommandLineRunner {
 
     private final BookingRepository bookingRepository;
     private final DriverRepository driverRepository;
     private ReviewRepository reviewRepository;
+
+    public ReviewService(BookingRepository bookingRepository, DriverRepository driverRepository,
+                         ReviewRepository reviewRepository) {
+        this.bookingRepository = bookingRepository;
+        this.driverRepository = driverRepository;
+        this.reviewRepository = reviewRepository;
+    }
 
     @Override
     public void run(String... args) throws Exception {

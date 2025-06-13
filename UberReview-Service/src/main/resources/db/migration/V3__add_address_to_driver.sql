@@ -1,0 +1,5 @@
+ALTER TABLE driver
+    ADD address VARCHAR(255) NULL;
+
+ALTER TABLE driver
+    MODIFY address VARCHAR (255) NOT NULL;

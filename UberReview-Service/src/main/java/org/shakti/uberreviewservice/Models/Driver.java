@@ -23,6 +23,13 @@ public class Driver extends BaseModel{
     @Column(nullable = false, unique = true)
     private String licenseNumber;
 
+    @Column(nullable = false)
+    private String phoneNumber;
+
+    @Column(nullable = false)
+    private String address;
+
+
     // 1 Driver can have many bookings
     @OneToMany(mappedBy = "driver",fetch = FetchType.LAZY)
     @Fetch(FetchMode.SUBSELECT) // To solve the N+1 problem
