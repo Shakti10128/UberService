@@ -15,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class Booking extends BaseModel{
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "booking",cascade = CascadeType.ALL)
     private Review review; // defines 1:1 relation between Booking & Review
 
     @Enumerated(value = EnumType.STRING)
