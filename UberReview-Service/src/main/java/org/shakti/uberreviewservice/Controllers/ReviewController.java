@@ -1,5 +1,6 @@
 package org.shakti.uberreviewservice.Controllers;
 
+import org.shakti.uberreviewservice.Dtos.ReviewDTO;
 import org.shakti.uberreviewservice.Models.Review;
 import org.shakti.uberreviewservice.Services.ReviewService;
 import org.shakti.uberreviewservice.Utils.ApiResponse;
@@ -16,14 +17,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1")
 public class ReviewController {
-    private ReviewService reviewService;
+    private final ReviewService reviewService;
     public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
     }
 
     @PostMapping("/create-review")
-    public ResponseEntity<ApiResponse<Void>> createReviewHandler(@RequestBody Review review) {
-        reviewService.createReview(review);
+    public ResponseEntity<ApiResponse<Void>> createReviewHandler(@RequestBody ReviewDTO reviewDTO) {
+        reviewService.createReview(reviewDTO);
         ApiResponse response = new ApiResponse<>(true,"Review created successfully");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

@@ -14,6 +14,4 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findAllByRatingIsLessThanEqual(Integer givenRating);
 
     List<Review> findAllByCreatedAtBefore(Date createdAt);
-
-    Review findReviewByBookingId(Long bookingId);
 }

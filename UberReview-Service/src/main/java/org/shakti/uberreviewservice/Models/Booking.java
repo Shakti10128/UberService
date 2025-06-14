@@ -14,8 +14,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Booking extends BaseModel{
-
-    @OneToOne(mappedBy = "booking",cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "review_id")  // foreign key in booking table
     private Review review; // defines 1:1 relation between Booking & Review
 
     @Enumerated(value = EnumType.STRING)

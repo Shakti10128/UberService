@@ -1,5 +1,6 @@
 package org.shakti.uberreviewservice.Services;
 
+import org.shakti.uberreviewservice.Dtos.ReviewDTO;
 import org.shakti.uberreviewservice.Models.Review;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface ReviewService {
     * The method create a new review
     * Return void
     * */
-    void createReview(Review review);
+    void createReview(ReviewDTO reviewDTO);
 
     Review getReviewById(Long reviewId);
 

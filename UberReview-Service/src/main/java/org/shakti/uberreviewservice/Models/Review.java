@@ -17,8 +17,4 @@ public class Review extends BaseModel{
     private String content;
 
     private Double rating;
-
-    @OneToOne
-    @JoinColumn(name = "booking_id",unique = true)
-    private Booking booking;
 }
