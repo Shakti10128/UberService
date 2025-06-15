@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
@@ -14,4 +15,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findAllByRatingIsLessThanEqual(Integer givenRating);
 
     List<Review> findAllByCreatedAtBefore(Date createdAt);
+
+    Optional<Review> findById(Long Long);
 }

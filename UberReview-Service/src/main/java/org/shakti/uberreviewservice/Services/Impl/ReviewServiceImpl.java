@@ -33,10 +33,8 @@ public class ReviewServiceImpl implements ReviewService {
             Booking booking = bookingRepository.findById(reviewDTO.getBookingId())
                     .orElseThrow(() -> new CustomError("Booking not found with bookingId: " + reviewDTO.getBookingId(), HttpStatus.NOT_FOUND));
 
-            System.out.println("converting dto to entity");
             Review review = ReviewMapper.toEntity(reviewDTO);
             // before saving id is null
-            System.out.println("saving review");
             reviewRepository.save(review);
             // after saving id will be auto-generated via JPA, coz before save the entity to DB, JPA will create and id
             // and coz of that database review object will be in sync with DB
@@ -44,33 +42,70 @@ public class ReviewServiceImpl implements ReviewService {
             // save the review id into booking table corresponding to the booking
             booking.setReview(review);
             bookingRepository.save(booking);
-            System.out.println(review.getId());
-        }
-        catch (CustomError e) {
-            throw e; // Let specific errors pass through as they are
         }
         catch (Exception e) {
-            throw new CustomError("Error while the creating review", HttpStatus.INTERNAL_SERVER_ERROR);
+            if(e instanceof CustomError) throw e;
+            throw new CustomError("Error while creating review", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
     public Review getReviewById(Long reviewId) {
-        return null;
+        try{
+            return reviewRepository.findById(reviewId).orElseThrow(
+                    ()-> new CustomError("Review not found with reviewId: " + reviewId, HttpStatus.NOT_FOUND));
+        }
+        catch (Exception e) {
+            if(e instanceof CustomError) throw e;
+            throw new CustomError("Error while getting review by id", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
     public List<Review> getAllReviews() {
-        return List.of();
+        try{
+            return reviewRepository.findAll();
+        }
+        catch (Exception e) {
+            throw new CustomError("Error while getting all reviews", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
-    public Review updateReview(Review review) {
-        return null;
+    public void updateReview(Review review) {
+        try {
+            Review existingReview = reviewRepository.findById(review.getId())
+                    .orElseThrow(() -> new CustomError("Review not found with reviewId: " + review.getId(), HttpStatus.NOT_FOUND));
+
+            // Update the fields you want from 'review' to 'existingReview'
+            existingReview.setRating(review.getRating());
+            existingReview.setContent(review.getContent());
+
+            reviewRepository.save(existingReview);
+        }
+        catch (Exception e) {
+            if(e instanceof CustomError) throw e;
+            throw new CustomError("Error while updating review", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
     public void deleteReviewById(Long reviewId) {
+        try{
+            Review existingReview = reviewRepository.findById(reviewId)
+                    .orElseThrow(() -> new CustomError("Review not found with reviewId: " + reviewId, HttpStatus.NOT_FOUND));
 
+            // finding the booking corresponding to the review
+            Booking booking = bookingRepository.findBookingByReviewId(reviewId).orElseThrow(()-> new CustomError("There is no booking for the reviewId: " + reviewId, HttpStatus.NOT_FOUND));
+            // make null the review in booking, coz we are going to delete the review corresponding to the booking
+            booking.setReview(null);
+            bookingRepository.save(booking);
+
+            reviewRepository.delete(existingReview);
+        }
+        catch (Exception e) {
+            if(e instanceof CustomError) throw e;
+            throw new CustomError("Error while deleting review by id", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
