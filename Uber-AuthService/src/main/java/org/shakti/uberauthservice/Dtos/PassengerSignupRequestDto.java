@@ -1,6 +1,7 @@
 package org.shakti.uberauthservice.Dtos;
 
 import lombok.*;
+import org.shakti.uberauthservice.Models.Passenger;
 
 @Getter
 @Setter
@@ -13,4 +14,13 @@ public class PassengerSignupRequestDto {
     private String password;
     private String phoneNumber;
     private String name;
+
+    public static Passenger toPassenger(PassengerSignupRequestDto passengerSignupRequestDto) {
+        return Passenger.builder()
+                .email(passengerSignupRequestDto.getEmail())
+                .password(passengerSignupRequestDto.getPassword())
+                .phoneNumber(passengerSignupRequestDto.phoneNumber)
+                .name(passengerSignupRequestDto.getName())
+                .build();
+    }
 }
