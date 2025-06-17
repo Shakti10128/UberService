@@ -3,8 +3,10 @@ package org.shakti.uberauthservice.Services;
 import jakarta.transaction.Transactional;
 import org.shakti.uberauthservice.Dtos.PassengerResponseDto;
 import org.shakti.uberauthservice.Dtos.PassengerSignupRequestDto;
+import org.shakti.uberauthservice.Exceptions.CustomError;
 import org.shakti.uberauthservice.Models.Passenger;
 import org.shakti.uberauthservice.Repositories.PassengerRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
         try{
             // first check either the email exist or not
             if(passengerRepository.existsByEmail(passengerSignupRequestDto.getEmail())){
-                throw new RuntimeException("Email already register with our service");
+                throw new CustomError("Email already register with our service", HttpStatus.CONFLICT);
             }
             passengerSignupRequestDto.setPassword(passwordEncoder.encode(passengerSignupRequestDto.getPassword()));
             Passenger passenger = PassengerSignupRequestDto.toPassenger(passengerSignupRequestDto);
@@ -33,7 +35,8 @@ public class AuthServiceImpl implements AuthService {
             return PassengerResponseDto.toPassengerResponseDto(passenger);
         }
         catch (Exception e){
-            throw (RuntimeException) e;
+            if(e instanceof CustomError) throw (CustomError)e;
+            throw e;
         }
     }
 }
