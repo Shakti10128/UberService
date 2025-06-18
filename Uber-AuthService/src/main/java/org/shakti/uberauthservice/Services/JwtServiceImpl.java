@@ -44,7 +44,7 @@ public class JwtServiceImpl{
         return createToken(new HashMap<>(), email);
     }
 
-    private Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         try{
             return Jwts.parser()
                     .verifyWith(getSecretKey())
@@ -62,31 +62,19 @@ public class JwtServiceImpl{
         return claimsResolver.apply(claims);
     }
 
-    private Date extractExpiration(String token) {
+    public Date extractExpiration(String token) {
         return extractClaims(token, Claims::getExpiration);
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    private String extractEmail(String token) {
+    public String extractEmail(String token) {
         return extractClaims(token,Claims::getSubject);
     }
 
-    private boolean validateToken(String token, String email) {
+    public boolean validateToken(String token, String email) {
         return (!isTokenExpired(token) && extractEmail(token).equals(email));
     }
-
-
-//    @Override
-//    public void run(String... args) throws Exception {
-//        Map<String, Object> payload = Map.of(
-//                "email","shakti@gmail.com",
-//                "name","shakti"
-//        );
-//        String username = "shakti10128";
-//        String token = createToken(payload,username);
-//        System.out.println(token);
-//    }
 }
