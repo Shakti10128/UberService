@@ -39,4 +39,30 @@ public class AuthServiceImpl implements AuthService {
             throw e;
         }
     }
+
+    @Override
+    public PassengerResponseDto signIn(String email, String password) {
+        try{
+            // check email and password exist or not
+            if(email == null || password == null){
+                throw new CustomError("All fields are required", HttpStatus.BAD_REQUEST);
+            }
+            // check either the email is registered or not with our service\
+            if(!passengerRepository.existsByEmail(email)){
+                throw new CustomError("Email does not exist", HttpStatus.CONFLICT);
+            }
+
+            // get the passenger via email from DB
+            Passenger passenger = passengerRepository.findByEmail(email);
+            // check the passenger provided password and the DB hashPassword are matching or not
+            if(!passwordEncoder.matches(password, passenger.getPassword())){
+                throw new CustomError("Wrong password", HttpStatus.CONFLICT);
+            }
+            return PassengerResponseDto.toPassengerResponseDto(passenger);
+        }
+        catch (Exception e){
+            if(e instanceof CustomError) throw (CustomError)e;
+            throw e;
+        }
+    }
 }

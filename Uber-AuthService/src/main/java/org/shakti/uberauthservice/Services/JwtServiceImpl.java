@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtServiceImpl implements CommandLineRunner {
+public class JwtServiceImpl{
     @Value("${jwt.expire}")
     private int EXPIRE;
 
@@ -75,14 +75,14 @@ public class JwtServiceImpl implements CommandLineRunner {
     }
 
 
-    @Override
-    public void run(String... args) throws Exception {
-        Map<String, Object> payload = Map.of(
-                "email","shakti@gmail.com",
-                "name","shakti"
-        );
-        String username = "shakti10128";
-        String token = createToken(payload,username);
-        System.out.println(token);
-    }
+//    @Override
+//    public void run(String... args) throws Exception {
+//        Map<String, Object> payload = Map.of(
+//                "email","shakti@gmail.com",
+//                "name","shakti"
+//        );
+//        String username = "shakti10128";
+//        String token = createToken(payload,username);
+//        System.out.println(token);
+//    }
 }

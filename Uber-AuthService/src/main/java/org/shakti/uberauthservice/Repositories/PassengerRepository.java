@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PassengerRepository extends JpaRepository<Passenger, Long> {
     boolean existsByEmail(String email);
+
+    Passenger findByEmail(String email);
 }
