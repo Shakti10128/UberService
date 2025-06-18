@@ -30,7 +30,7 @@ public class JwtServiceImpl{
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
-    private String createToken(Map<String, Object> payload,String email) {
+    public String createToken(Map<String, Object> payload,String email) {
         return Jwts.builder()
                 .claims(payload)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -38,6 +38,10 @@ public class JwtServiceImpl{
                 .subject(email)
                 .signWith(getSecretKey())
                 .compact();
+    }
+
+    public String createToken(String email) {
+        return createToken(new HashMap<>(), email);
     }
 
     private Claims extractAllClaims(String token) {

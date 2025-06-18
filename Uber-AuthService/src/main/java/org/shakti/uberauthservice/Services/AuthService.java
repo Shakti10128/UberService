@@ -1,10 +1,13 @@
 package org.shakti.uberauthservice.Services;
 
+import jakarta.servlet.http.HttpServletResponse;
+import org.shakti.uberauthservice.Dtos.AuthRequestDto;
 import org.shakti.uberauthservice.Dtos.PassengerResponseDto;
 import org.shakti.uberauthservice.Dtos.PassengerSignupRequestDto;
 
-public interface AuthService {
-    PassengerResponseDto signUp(PassengerSignupRequestDto passengerSignupRequestDto);
+import java.util.Map;
 
-    PassengerResponseDto signIn(String email, String password);
+
+public interface AuthService {
+    String signIn(AuthRequestDto authRequestDto, HttpServletResponse httpServletResponse);
 }

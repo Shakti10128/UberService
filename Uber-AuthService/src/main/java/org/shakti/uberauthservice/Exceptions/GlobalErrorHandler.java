@@ -17,7 +17,8 @@ public class GlobalErrorHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGeneralError(Exception e) {
-        return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ErrorMessage> handleGeneralError(Exception e,HttpServletRequest request) {
+        ErrorMessage errorMessage = new ErrorMessage(e.getMessage(), new Date() ,request.getRequestURI());
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 }
