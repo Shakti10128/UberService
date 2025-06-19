@@ -1,4 +1,4 @@
-package org.shakti.uberauthservice.Models;
+package org.shakti.ubercommonlibraries.Models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

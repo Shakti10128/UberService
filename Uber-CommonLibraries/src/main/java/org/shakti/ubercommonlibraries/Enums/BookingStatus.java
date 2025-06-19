@@ -1,4 +1,4 @@
-package org.shakti.uberauthservice.Enums;
+package org.shakti.ubercommonlibraries.Enums;
 
 public enum BookingStatus {
     SCHEDULED,

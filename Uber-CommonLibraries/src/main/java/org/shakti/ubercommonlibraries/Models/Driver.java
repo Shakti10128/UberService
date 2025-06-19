@@ -1,4 +1,4 @@
-package org.shakti.uberauthservice.Models;
+package org.shakti.ubercommonlibraries.Models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,6 +35,8 @@ public class Driver extends BaseModel{
 
     @Column(nullable = false)
     private String address;
+
+    private String adharCardNumber;
 
 
     // 1 Driver can have many bookings

@@ -1,4 +1,4 @@
-package org.shakti.uberauthservice.Models;
+package org.shakti.ubercommonlibraries.Models;
 
 import jakarta.persistence.*;
 import lombok.Getter;

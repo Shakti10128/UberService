@@ -1,8 +1,8 @@
-package org.shakti.uberauthservice.Models;
+package org.shakti.ubercommonlibraries.Models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.shakti.uberauthservice.Enums.BookingStatus;
+import org.shakti.ubercommonlibraries.Enums.BookingStatus;
 
 import java.util.Date;
 
