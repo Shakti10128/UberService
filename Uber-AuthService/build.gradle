@@ -15,6 +15,7 @@ java {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -29,10 +30,14 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'com.mysql:mysql-connector-j:9.3.0'
-    implementation 'org.flywaydb:flyway-mysql:11.8.2'
 
     implementation("org.springframework.boot:spring-boot-starter-security:3.5.0")
     implementation("io.jsonwebtoken:jjwt:0.12.6")
+
+    // adding common library dependency here using groupid+artifactId+version
+    //group + version -> build.gradle
+    // artifactId -> application.properties (name of the project)
+    implementation("org.shakti:Uber-CommonLibraries:0.0.2-SNAPSHOT")
 }
 
 tasks.named('test') {

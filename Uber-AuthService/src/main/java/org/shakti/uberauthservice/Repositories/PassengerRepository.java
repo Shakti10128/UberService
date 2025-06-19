@@ -1,6 +1,6 @@
 package org.shakti.uberauthservice.Repositories;
 
-import org.shakti.uberauthservice.Models.Passenger;
+import org.shakti.ubercommonlibraries.Models.Passenger;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

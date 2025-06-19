@@ -2,8 +2,8 @@ package org.shakti.uberauthservice.Services;
 
 import org.shakti.uberauthservice.Dtos.DriverSignupRequestDto;
 import org.shakti.uberauthservice.Exceptions.CustomError;
-import org.shakti.uberauthservice.Models.Driver;
 import org.shakti.uberauthservice.Repositories.DriverRepository;
+import org.shakti.ubercommonlibraries.Models.Driver;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

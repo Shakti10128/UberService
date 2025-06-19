@@ -1,7 +1,7 @@
 package org.shakti.uberauthservice.Dtos;
 
 import lombok.*;
-import org.shakti.uberauthservice.Models.Driver;
+import org.shakti.ubercommonlibraries.Models.Driver;
 
 @Getter
 @Setter

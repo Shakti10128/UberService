@@ -1,12 +1,12 @@
 package org.shakti.uberauthservice.Services;
 
 import org.shakti.uberauthservice.Exceptions.CustomError;
-import org.shakti.uberauthservice.Models.Driver;
-import org.shakti.uberauthservice.Models.Passenger;
 import org.shakti.uberauthservice.Repositories.DriverRepository;
 import org.shakti.uberauthservice.Repositories.PassengerRepository;
 import org.shakti.uberauthservice.helpers.AuthDriverDetails;
 import org.shakti.uberauthservice.helpers.AuthPassengerDetails;
+import org.shakti.ubercommonlibraries.Models.Driver;
+import org.shakti.ubercommonlibraries.Models.Passenger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,6 +1,6 @@
 package org.shakti.uberauthservice.helpers;
 
-import org.shakti.uberauthservice.Models.Driver;
+import org.shakti.ubercommonlibraries.Models.Driver;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

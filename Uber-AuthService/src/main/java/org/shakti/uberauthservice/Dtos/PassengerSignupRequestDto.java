@@ -1,7 +1,7 @@
 package org.shakti.uberauthservice.Dtos;
 
 import lombok.*;
-import org.shakti.uberauthservice.Models.Passenger;
+import org.shakti.ubercommonlibraries.Models.Passenger;
 
 @Getter
 @Setter
