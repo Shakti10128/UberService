@@ -36,7 +36,7 @@ public class Passenger extends BaseModel{
     @OneToOne
     private Booking currentBooking;
 
-    @DecimalMin(value="0.01", message = "Rating must be greater than or equal to 0.00")
+    @DecimalMin(value="0.01", message = "Rating must be greater than or equal to 0.01")
     @DecimalMax(value = "5.00", message = "Rating must be less than or equal to 5.00")
     private double rating;
 
