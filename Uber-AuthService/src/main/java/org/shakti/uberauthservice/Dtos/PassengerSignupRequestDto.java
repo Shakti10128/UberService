@@ -14,6 +14,7 @@ public class PassengerSignupRequestDto {
     private String password;
     private String phoneNumber;
     private String name;
+    private double rating = 0.01;
 
     public static Passenger toPassenger(PassengerSignupRequestDto passengerSignupRequestDto) {
         return Passenger.builder()
@@ -21,6 +22,7 @@ public class PassengerSignupRequestDto {
                 .password(passengerSignupRequestDto.getPassword())
                 .phoneNumber(passengerSignupRequestDto.phoneNumber)
                 .name(passengerSignupRequestDto.getName())
+                .rating(passengerSignupRequestDto.getRating())
                 .build();
     }
 }

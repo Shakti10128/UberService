@@ -37,7 +37,7 @@ dependencies {
     // adding common library dependency here using groupid+artifactId+version
     //group + version -> build.gradle
     // artifactId -> application.properties (name of the project)
-    implementation("org.shakti:Uber-CommonLibraries:0.0.2-SNAPSHOT")
+    implementation("org.shakti:Uber-CommonLibraries:0.0.3-SNAPSHOT")
 }
 
 tasks.named('test') {

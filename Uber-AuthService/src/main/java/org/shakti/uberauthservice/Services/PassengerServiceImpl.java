@@ -23,6 +23,10 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     public PassengerResponseDto signUp(PassengerSignupRequestDto passengerSignupRequestDto) {
         try{
+            if(passengerSignupRequestDto.getEmail() == null || passengerSignupRequestDto.getName() == null
+            || passengerSignupRequestDto.getPassword() == null || passengerSignupRequestDto.getPhoneNumber() == null){
+
+            }
             // first check either the email exist or not
             if(passengerRepository.existsByEmail(passengerSignupRequestDto.getEmail())){
                 throw new CustomError("Email already register with our service", HttpStatus.CONFLICT);

@@ -15,6 +15,7 @@ public class DriverSignupRequestDto {
     private String licenseNumber;
     private String phoneNumber;
     private String address;
+    private double rating = 0.01;
 
     public static Driver toDriver(DriverSignupRequestDto driverAuthRequestDto) {
         return Driver.builder()
@@ -24,6 +25,7 @@ public class DriverSignupRequestDto {
                 .password(driverAuthRequestDto.getPassword())
                 .email(driverAuthRequestDto.getEmail())
                 .name(driverAuthRequestDto.getName())
+                .rating(driverAuthRequestDto.getRating())
                 .build();
     }
 
