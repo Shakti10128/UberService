@@ -26,6 +26,7 @@ public abstract class BaseModel {
     @Column(nullable = false)
     protected Date createdAt;
 
+
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @Column(nullable = false)

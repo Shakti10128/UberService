@@ -18,9 +18,9 @@ public class OTP extends BaseModel{
 
     public static OTP makeOTP(String sentToNumber) {
         Random random = new Random();
-        Integer randomInt = random.nextInt(9999) + 1000;
+        int randomInt = random.nextInt(9999) + 1000;
         return OTP.builder()
-                .otp(randomInt.toString())
+                .otp(Integer.toString(randomInt))
                 .sentToNumber(sentToNumber)
                 .build();
     }
