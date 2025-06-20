@@ -49,6 +49,8 @@ public class Driver extends BaseModel{
     @OneToOne
     private ExactLocation home;
 
+    private boolean isDriverActive;
+
     @DecimalMin(value="0.01", message = "Rating must be greater than or equal to 0.00")
     @DecimalMax(value = "5.00", message = "Rating must be less than or equal to 5.00")
     private double rating;
