@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.2'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'org.shakti'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-devtools:3.5.0'
+
+    // Lombok - Required for IDE and compile-time processing
+    compileOnly 'org.projectlombok:lombok:1.18.38'
+    annotationProcessor 'org.projectlombok:lombok:1.18.38'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'com.mysql:mysql-connector-j:9.3.0'
+    implementation("redis.clients:jedis:5.2.0")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis:3.4.3")
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
