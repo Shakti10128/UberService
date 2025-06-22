@@ -24,7 +24,7 @@ public class LocationController {
         return ResponseEntity.ok(isLocationSaved);
     }
 
-    @GetMapping("/drivers/nearby")
+    @PostMapping("/drivers/nearby")
     public ResponseEntity<List<DriverLocationDto>> getNearbyDriversHandler(@RequestBody NearbyDriversRequestDto nearbyDriversRequestDto) {
         List<DriverLocationDto> res = locationServices.getNearbyDrivers(nearbyDriversRequestDto);
         return ResponseEntity.ok(res);
