@@ -32,10 +32,14 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'com.mysql:mysql-connector-j:9.3.0'
 
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0' // Or the latest version
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0' // For JSON conversion
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.3.0")
+
     // adding common library dependency here using groupid+artifactId+version
     //group + version -> build.gradle
     // artifactId -> application.properties (name of the project)
-    implementation("org.shakti:Uber-CommonLibraries:0.0.5-SNAPSHOT")
+    implementation("org.shakti:Uber-CommonLibraries:0.0.6-SNAPSHOT")
 }
 
 tasks.named('test') {
