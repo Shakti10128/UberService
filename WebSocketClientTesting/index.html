@@ -33,8 +33,16 @@
                     console.log("Messgae received from the server: ", message);
                 })
 
-                stompClient.subscribe("/topic/scheduled",(message)=>{
-                    console.log("scheduled message received", message);
+                // stompClient.subscribe("/topic/scheduled",(message)=>{
+                //     console.log("scheduled message received", message);
+                // })
+
+                stompClient.subscribe("/topic/rideRequest",(data)=>{
+                    const response = confirm(`You have a new ride request from passenger: ${JSON.parse(data.body).passengerId} Do you accept it`);
+                    // sendint the driver response either true(accepted the request), false(reject the request)
+                    stompClient.send("/app/rideResponse",{},JSON.stringify({response}));
+                    //debugging
+                    console.log("response: " , response);
                 })
             })
         }
