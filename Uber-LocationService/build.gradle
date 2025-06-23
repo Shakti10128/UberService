@@ -31,6 +31,7 @@ dependencies {
     implementation 'com.mysql:mysql-connector-j:9.3.0'
     implementation("redis.clients:jedis:5.2.0")
     implementation("org.springframework.boot:spring-boot-starter-data-redis:3.4.3")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.3.0")
 }
 
 tasks.named('test') {
