@@ -20,8 +20,6 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-devtools:3.5.0'
 
@@ -31,12 +29,8 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation 'com.mysql:mysql-connector-j:9.3.0'
 
-    // adding common library dependency here using groupid+artifactId+version
-    //group + version -> build.gradle
-    // artifactId -> application.properties (name of the project)
-    implementation("org.shakti:Uber-CommonLibraries:0.0.3-SNAPSHOT")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.3.0")
 }
 
 tasks.named('test') {

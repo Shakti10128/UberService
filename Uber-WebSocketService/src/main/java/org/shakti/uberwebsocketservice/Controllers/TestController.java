@@ -24,8 +24,8 @@ public class TestController {
     }
 
 
-    @Scheduled(fixedDelay = 2000)
-    public void sendMessagePeriodically(){
-        messagingTemplate.convertAndSend("/topic/scheduled", "Periodic message from the server: " + System.currentTimeMillis());
-    }
+//    @Scheduled(fixedDelay = 2000)
+//    public void sendMessagePeriodically(){
+//        messagingTemplate.convertAndSend("/topic/scheduled", "Periodic message from the server: " + System.currentTimeMillis());
+//    }
 }
