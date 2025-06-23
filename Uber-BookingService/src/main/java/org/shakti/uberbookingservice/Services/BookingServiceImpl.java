@@ -2,19 +2,17 @@ package org.shakti.uberbookingservice.Services;
 
 import org.shakti.uberbookingservice.Adaptors.BookingAdaptor;
 import org.shakti.uberbookingservice.Apis.LocationServiceApi;
-import org.shakti.uberbookingservice.Dtos.CreateBookingRequestDto;
-import org.shakti.uberbookingservice.Dtos.CreateBookingResponseDto;
-import org.shakti.uberbookingservice.Dtos.DriverLocationDto;
-import org.shakti.uberbookingservice.Dtos.NearbyDriversRequestDto;
+import org.shakti.uberbookingservice.Dtos.*;
 import org.shakti.uberbookingservice.Exceptions.CustomError;
 import org.shakti.uberbookingservice.Repositories.BookingRepository;
+import org.shakti.uberbookingservice.Repositories.DriverRepository;
 import org.shakti.uberbookingservice.Repositories.PassengerRepository;
 import org.shakti.ubercommonlibraries.Models.Booking;
+import org.shakti.ubercommonlibraries.Models.Driver;
 import org.shakti.ubercommonlibraries.Models.Passenger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,16 +29,17 @@ public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
     private final PassengerRepository passengerRepository;
+    private final DriverRepository driverRepository;
     private final BookingAdaptor bookingAdaptor;
-    private final RestTemplate restTemplate;
     private final LocationServiceApi locationServiceApi;
 
     public BookingServiceImpl(BookingRepository bookingRepository, PassengerRepository passengerRepository,
-                              BookingAdaptor bookingAdaptor,RestTemplate restTemplate, LocationServiceApi locationServiceApi) {
+                              BookingAdaptor bookingAdaptor,LocationServiceApi locationServiceApi,
+                              DriverRepository driverRepository) {
         this.bookingRepository = bookingRepository;
         this.passengerRepository = passengerRepository;
+        this.driverRepository = driverRepository;
         this.bookingAdaptor = bookingAdaptor;
-        this.restTemplate = restTemplate;
         this.locationServiceApi = locationServiceApi;
     }
 
@@ -54,7 +53,7 @@ public class BookingServiceImpl implements BookingService {
                             new CustomError("Passenger not found with id: " + bookingDetails.getPassengerId(),HttpStatus.BAD_REQUEST));
 
             // create the brand-new booking object
-            Booking booking = bookingAdaptor.toBooking(bookingDetails, passenger);
+            Booking booking = bookingAdaptor.createBookingRequestToBooking(bookingDetails, passenger);
 
             Booking newBooking = bookingRepository.save(booking);
 
@@ -78,7 +77,7 @@ public class BookingServiceImpl implements BookingService {
 //                });
 //            }
 
-            return bookingAdaptor.toResponse(newBooking);
+            return bookingAdaptor.bookingToCreateBookingResponse(newBooking);
         }
         catch (CustomError ce) {
             throw ce;
@@ -87,7 +86,40 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    public void processNearbyDriversAsync(NearbyDriversRequestDto requestDto){
+    @Override
+    public AssignDriverResponseDto updateBookingStatusAndDriver(AssignDriverRequestDto requestDto, Long bookingId) {
+        try{
+            // if there is something missing from the required parameters
+            if(requestDto.getBookingStatus() == null || requestDto.getDriverId() == null
+               || bookingId == null){
+                throw new CustomError("Missing bookingId or driverId or booking status",HttpStatus.BAD_REQUEST);
+            }
+
+            // check booking exist or not
+            Booking existingBooking = bookingRepository.findBookingById(bookingId)
+                    .orElseThrow(()-> new CustomError("Booking not found with id: " + bookingId,HttpStatus.BAD_REQUEST));
+
+            // check driver exist or not
+            Driver existingDriver = driverRepository.findById(requestDto.getDriverId()).orElseThrow(
+                    ()-> new CustomError("Driver not found with id: " + requestDto.getDriverId(), HttpStatus.BAD_REQUEST)
+            );
+
+            // update the booking status and driver if everything is ok
+            existingBooking.setBookingStatus(requestDto.getBookingStatus());
+            existingBooking.setDriver(existingDriver);
+            bookingRepository.save(existingBooking);
+
+            return bookingAdaptor.bookingToAssignDriverResponseDto(existingBooking);
+        }
+        catch (CustomError ce) {
+            throw ce;
+        }
+        catch (Exception ex) {
+            throw new CustomError("Internal server error occurred while updating the booking status and driver", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private void processNearbyDriversAsync(NearbyDriversRequestDto requestDto){
         Call<DriverLocationDto[]> call = locationServiceApi.nearbyDrivers(requestDto);
 
         // async callback function
