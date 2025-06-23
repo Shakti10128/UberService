@@ -2,6 +2,7 @@ package org.shakti.uberbookingservice.Services;
 
 import org.shakti.uberbookingservice.Adaptors.BookingAdaptor;
 import org.shakti.uberbookingservice.Apis.LocationServiceApi;
+import org.shakti.uberbookingservice.Apis.UberSocketApi;
 import org.shakti.uberbookingservice.Dtos.*;
 import org.shakti.uberbookingservice.Exceptions.CustomError;
 import org.shakti.uberbookingservice.Repositories.BookingRepository;
@@ -17,6 +18,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,15 +34,17 @@ public class BookingServiceImpl implements BookingService {
     private final DriverRepository driverRepository;
     private final BookingAdaptor bookingAdaptor;
     private final LocationServiceApi locationServiceApi;
+    private final UberSocketApi uberSocketApi;
 
     public BookingServiceImpl(BookingRepository bookingRepository, PassengerRepository passengerRepository,
                               BookingAdaptor bookingAdaptor,LocationServiceApi locationServiceApi,
-                              DriverRepository driverRepository) {
+                              DriverRepository driverRepository, UberSocketApi uberSocketApi) {
         this.bookingRepository = bookingRepository;
         this.passengerRepository = passengerRepository;
         this.driverRepository = driverRepository;
         this.bookingAdaptor = bookingAdaptor;
         this.locationServiceApi = locationServiceApi;
+        this.uberSocketApi = uberSocketApi;
     }
 
 
@@ -57,13 +61,7 @@ public class BookingServiceImpl implements BookingService {
 
             Booking newBooking = bookingRepository.save(booking);
 
-            NearbyDriversRequestDto nearbyDriversRequestDto = NearbyDriversRequestDto.builder()
-                    .latitude(bookingDetails.getStartLocation().getLatitude())
-                    .longitude(bookingDetails.getStartLocation().getLongitude())
-                    .searchRadius(10) // default radius for searching the nearby driver
-                    .build();
-
-            processNearbyDriversAsync(nearbyDriversRequestDto);
+            processNearbyDriversAsync(bookingAdaptor.convertToNearbyDriversRequestDto(booking),passenger.getId());
 
             // make api call to location service to get the nearby drivers using restTemplate or retrofit
 //            ResponseEntity<DriverLocationDto[]> result = restTemplate.postForEntity(LOCATION_SERVICE_URI+"/api/v1/location/drivers/nearby", nearbyDriversRequestDto ,DriverLocationDto[].class);
@@ -119,7 +117,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    private void processNearbyDriversAsync(NearbyDriversRequestDto requestDto){
+    private void processNearbyDriversAsync(NearbyDriversRequestDto requestDto, Long passengerId) {
         Call<DriverLocationDto[]> call = locationServiceApi.nearbyDrivers(requestDto);
 
         // async callback function
@@ -131,15 +129,44 @@ public class BookingServiceImpl implements BookingService {
                 if(response.isSuccessful() && response.body() != null){
                     // list of all nearby driver
                     List<DriverLocationDto> driverLocations = Arrays.asList(response.body());
+                    List<Long> driverIds = new ArrayList<>();
                     driverLocations.forEach((driver)->{
+                        driverIds.add(Long.valueOf(driver.getDriverId()));
                         System.out.println(driver.getDriverId() + " " + driver.getLatitude() + " " + driver.getLongitude());
                     });
+
+                    raiseRideRequestAsync(bookingAdaptor.convertToRideRequestDto(driverIds, passengerId));
+                }
+                else{
+                    System.out.println("request failed " + response.message());
                 }
             }
 
             // what should happen on failure
             @Override
             public void onFailure(Call<DriverLocationDto[]> call, Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        });
+    }
+
+    private void raiseRideRequestAsync(RideRequestDto requestDto){
+        Call<Boolean> call = uberSocketApi.newRide(requestDto);
+
+        call.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if(response.isSuccessful() && response.body() != null){
+                    Boolean result = response.body();
+                    System.out.println("Driver response is " + result.toString());
+                }
+                else{
+                    System.out.println("request failed " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable throwable) {
                 throwable.printStackTrace();
             }
         });
